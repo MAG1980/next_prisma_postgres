@@ -33,3 +33,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/.env
+/.idea/dataSources.xml
+/.idea/markdown.xml
+/prisma_old/migrations/20230616135625_init/migration.sql
+/prisma_old/migrations/migration_lock.toml
+/.idea/php.xml
+/prisma_old/schema.prisma
+/.idea/vcs.xml
+/prisma/migrations/20230617060948_init/migration.sql
+/prisma/migrations/migration_lock.toml
