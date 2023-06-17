@@ -5,9 +5,9 @@ sudo ss -lptn 'sport = :5432' // Определить PID процесса, за
 kill <pid> // Завершить процесс с указанным PID
 
 2. npm i -D prisma
-   npm i @prisma/client
+   npm i @prisma/client //автоматически вызывается команда install, prisma generate которая считывает вашу схему Prisma и генерирует версию Prisma Client, адаптированную к вашим моделям.
    npx prisma init
-   prisma generate //вводится в консоль дословно (без npm)
+   prisma generate //вводится в консоль дословно (без npm). generate по умолчанию вызывается под капотом после запуска prisma migrate dev.
 3. Отредактировать DATABASE_URL в .env:
 заменить
 DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
@@ -17,6 +17,10 @@ DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=pub
 4. Создать схему БД prisma
 5. Выполнить начальную миграцию
    npx prisma migrate dev --name init
+   Всякий раз, когда вы обновляете свою схему Prisma, вам придется обновлять схему базы данных,
+используя либо prisma migrate dev, либо prisma db push.
+Это позволит синхронизировать схему базы данных со схемой Prisma.
+Команды также восстановят Prisma Client.
 6. Отредактировать package.json, чтобы при каждой сборке production-версии проекта определения типов prisma 
    генерировались заново. Это требуется, т.к. определения типов prisma хранятся в папке node_modules.
    "scripts": {

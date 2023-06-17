@@ -15,4 +15,30 @@ model Client {
   email        String? @unique
   name         String  @unique
   phone_number String  @unique
+  Cart         Cart?
+}
+
+model Cart {
+  id       Int            @id @default(autoincrement())
+  client   Client         @relation(fields: [clientId], references: [id])
+  clientId Int            @unique
+  good     CartsOnGoods[]
+}
+
+model Good {
+  id         Int            @id @default(autoincrement())
+  name       String         @unique
+  basePrise  Float
+  ingredient Json
+  cart       CartsOnGoods[]
+}
+
+model CartsOnGoods {
+  cart         Cart @relation(fields: [cartId], references: [id])
+  cartId       Int
+  good         Good @relation(fields: [goodId], references: [id])
+  goodId       Int
+  goodQuantity Int
+
+  @@id([cartId, goodId])
 }
