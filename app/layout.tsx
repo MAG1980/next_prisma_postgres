@@ -1,6 +1,9 @@
 
-import Nav from '@/components/Nav'
-import './globals.css'
+import Nav from '@/components/Nav';
+import './globals.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
+
+
 
 export const metadata = {
   title: 'Burger',

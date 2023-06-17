@@ -1,24 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700;800&display=swap');
-
-* {
-    box-sizing: border-box;
-    padding: 0;
-    margin: 0;
-  }
-  
-  html,
-  body {
-    font-family: 'Merriweather Sans', sans-serif;
-    font-weight: 800;
-  }
-  
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
-  
+ 
   .container {
-    max-width: 1555px;
+    max-width: 1400px;
     margin: 0 auto;
     display: flex;
     align-items: center;
@@ -26,23 +9,29 @@
   }
 
 nav {
-    background: #000;
+    position: absolute;
+    width: 100%;
+    background: transparent;
     color: #fff;
+    z-index: 9;
+    font-weight: 800;
 }
 
 .navigate {
-    font-size: 18px;
+    font-size: 20px;
   }
 
   .navigate a {
     margin-right: 35px;
+    padding-bottom: 5px;
+    text-decoration: none;
+    color: #FFF;
   }
 
   .navigate a:hover {
     color: #F2C64D;
     border-bottom: 2px solid #F2C64D;
   }
-
 
   .book_room a {
     margin-right: 15px;
@@ -56,6 +45,8 @@ nav {
     color: #F2C64D;
     border-radius: 30px;
     transition: 0.3s;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-weight: 800;
   }
 
   .book_btn:hover {
@@ -63,3 +54,5 @@ nav {
     color: #fff;
     border: 1px solid #F2C64D;
   }
+
+
