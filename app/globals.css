@@ -1,5 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Montserrat:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800|Pacifico|Paytone+One&display=swap");
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,500,600,700,800,900&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700;800&display=swap');
 
 * {
     box-sizing: border-box;
@@ -9,7 +8,8 @@
   
   html,
   body {
-    font-family: 'Raleway', sans-serif;
+    font-family: 'Merriweather Sans', sans-serif;
+    font-weight: 800;
   }
   
   a {
@@ -26,19 +26,23 @@
   }
 
 nav {
-    font-family: "Paytone One", sans-serif;
     background: #000;
     color: #fff;
 }
 
 .navigate {
     font-size: 18px;
-    border: 1px solid #000;
   }
 
   .navigate a {
     margin-right: 35px;
   }
+
+  .navigate a:hover {
+    color: #F2C64D;
+    border-bottom: 2px solid #F2C64D;
+  }
+
 
   .book_room a {
     margin-right: 15px;
@@ -48,7 +52,6 @@ nav {
     background: transparent;
     padding: 12px 26px;
     font-size: 18px;
-    font-weight: 400;
     border: 1px solid #F2C64D;
     color: #F2C64D;
     border-radius: 30px;
