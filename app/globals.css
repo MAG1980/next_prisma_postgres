@@ -1,11 +1,18 @@
 @import url('https://fonts.googleapis.com/css2?family=Merriweather+Sans:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
  
-  .container {
-    max-width: 1400px;
+.container {
+    max-width: 1140px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
+  }
+
+  .container_menu {
+    max-width: 1140px;
+    margin: 0 auto;
+   margin-top: 80px;
   }
 
 nav {
@@ -21,23 +28,23 @@ nav {
     font-size: 20px;
   }
 
-  .navigate a {
+.navigate a {
     margin-right: 35px;
     padding-bottom: 5px;
     text-decoration: none;
     color: #FFF;
   }
 
-  .navigate a:hover {
+.navigate a:hover {
     color: #F2C64D;
     border-bottom: 2px solid #F2C64D;
   }
 
-  .book_room a {
+.book_room a {
     margin-right: 15px;
   }
 
-  .book_btn {
+.book_btn {
     background: transparent;
     padding: 12px 26px;
     font-size: 18px;
@@ -49,10 +56,56 @@ nav {
     font-weight: 800;
   }
 
-  .book_btn:hover {
+.book_btn:hover {
     background: #F2C64D;
     color: #fff;
     border: 1px solid #F2C64D;
   }
 
+  .best_burgers_area {
+    padding-bottom: 115px;
+    padding-top: 140px;
+    background-image: url(/images/banner/burger_bg.png);
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+  }
 
+  .row {
+    width: 100%;
+    margin-bottom: 80px;
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+
+  .container_menu h1 {
+    color: #F2C64D;
+    font-size: 30px;
+    font-weight: 400;
+    margin-bottom: 18px;
+    display: block;
+    font-family: 'Pacifico', cursive;
+    text-align: center;
+  }
+
+  .container_menu h3 {
+    font-size: 50px;
+    font-weight: 700;
+    color: #1A0D01;
+    font-family: "Montserrat", sans-serif;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+.burger_menu {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin-top: 50px;
+}
+
+.card {
+    margin-bottom: 30px;
+}
