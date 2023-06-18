@@ -48,7 +48,28 @@ DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=pub
 После этого для использования Prisma Client достаточно выполнить импорт:
  import { prisma } from "@/lib/prisma";
 Это позволит избежать создания лишних подключений к БД.
-
+12. Чтобы изменения, внесённые в БД сохранялись после остановки контейнера Docker,
+нужно создать файл docker-compose.yml:
+    version: "3.8"
+    services:
+    postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+   - POSTGRES_USER=postgres
+   - POSTGRES_PASSWORD=postgres_password
+     volumes:
+   - postgres:/var/lib/postgresql/data
+     ports:
+   - "5432:5432"
+     volumes:
+     postgres:
+13. Добавить пароль имя пользователя БД в .env:
+    DATABASE_URL="postgresql://postgres:postgres_password@localhost:5432/databasename?schema=public"
+где postgres:postgres_password - db_user:db_password
+14. Отредактировать в package.json скрипт "dev":
+заменить действия на
+    "dev": "docker-compose up && next dev",
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
