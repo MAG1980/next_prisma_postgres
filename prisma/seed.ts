@@ -1,4 +1,5 @@
 import {PrismaClient} from "@prisma/client";
+import { faker } from '@faker-js/faker';
 
 const prisma = new PrismaClient()
 
@@ -6,17 +7,35 @@ async function main() {
     //Если использовать create вместо upsert, то при каждом посеве client создавался бы заново
     const client = await prisma.client.upsert({
         //проверка client на существование
-        where: {name: 'test@test.com'},
+        where: {email: 'test@test.com'},
         update: {},
         //выполнится только в том случае, если client не существует
         create: {
+            login:'Login',
             email: 'test@test.com',
-            name: 'Test User',
-            phone_number: "+75554443322"
+            firstName: 'Test User',
+            lastName:'Test User Lastname',
+            phoneNumber: "+75554443322",
         }
     })
     console.log(client)
+    
+    //Используем Faker
+    for (let i = 0; i < 10; i++) {
+        await prisma.client.create(
+            {
+                data: {
+                    login:faker.helpers.unique(faker.animal.type),
+                    email: faker.helpers.unique(faker.internet.email),
+                    firstName: faker.person.firstName(),
+                    lastName: faker.person.lastName(),
+                    phoneNumber: faker.helpers.unique(faker.phone.number)
+                }
+            }
+        )
+    }
 }
+
 main()
     .then(() => prisma.$disconnect())
     .catch(async (e) => {

@@ -17,6 +17,8 @@ DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=pub
 4. Создать схему БД prisma
 5. Выполнить начальную миграцию
    npx prisma migrate dev --name init
+   Для выполнения команды prisma migrate dev или prisma migrate reset без seed ("посева"),
+вы можете передать флаг --skip-seed.
    Всякий раз, когда вы обновляете свою схему Prisma, вам придется обновлять схему базы данных,
 используя либо prisma migrate dev, либо prisma db push.
 Это позволит синхронизировать схему базы данных со схемой Prisma.

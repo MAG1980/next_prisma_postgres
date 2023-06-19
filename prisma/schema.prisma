@@ -11,34 +11,77 @@ datasource db {
 }
 
 model Client {
-  id           Int     @id @default(autoincrement())
-  email        String? @unique
-  name         String  @unique
-  phone_number String  @unique
-  Cart         Cart?
+  id          Int     @id @default(autoincrement())
+  login       String? @unique
+  firstName   String?
+  lastName    String?
+  phoneNumber String? @unique
+  email       String? @unique
+  crders      Order[]
+  cart        Cart?
 }
 
 model Cart {
   id       Int            @id @default(autoincrement())
-  client   Client         @relation(fields: [clientId], references: [id])
+  client   Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId Int            @unique
-  good     CartsOnGoods[]
+  goods    CartsOnGoods[]
 }
 
 model Good {
-  id         Int            @id @default(autoincrement())
-  name       String         @unique
-  basePrise  Float
-  ingredient Json
-  cart       CartsOnGoods[]
+  id          Int             @id @default(autoincrement())
+  name        String          @unique
+  basePrise   Float
+  ingredients Json
+  description String
+  carts       CartsOnGoods[]
+  goods       GoodsOnOrders[]
+  GoodsImage  GoodsImage[]
 }
 
 model CartsOnGoods {
-  cart         Cart @relation(fields: [cartId], references: [id])
+  cart         Cart     @relation(fields: [cartId], references: [id])
   cartId       Int
-  good         Good @relation(fields: [goodId], references: [id])
+  good         Good     @relation(fields: [goodId], references: [id])
   goodId       Int
   goodQuantity Int
+  assignedAt   DateTime @default(now())
 
   @@id([cartId, goodId])
+}
+
+enum OrderStatuses {
+  ISSUED
+  PAID
+  DELIVERY
+  READY
+  COMPLETED
+}
+
+model Order {
+  id       Int             @id @default(autoincrement())
+  client   Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int
+  status   OrderStatuses   @default(ISSUED)
+  goodd    GoodsOnOrders[]
+}
+
+model GoodsOnOrders {
+  good         Good     @relation(fields: [goodId], references: [id])
+  goodId       Int
+  order        Order    @relation(fields: [orderId], references: [id])
+  orderId      Int
+  goodQuantity Int
+  assignedAt   DateTime @default(now())
+
+  @@id([goodId, orderId])
+}
+
+model GoodsImage {
+  id        Int      @id @default(autoincrement())
+  good      Good     @relation(fields: [goodId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  goodId    Int
+  link      String   @unique
+  fileSize  Int
+  createdAt DateTime @default(now())
 }
