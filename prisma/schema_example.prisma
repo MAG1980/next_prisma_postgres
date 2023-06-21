@@ -398,3 +398,55 @@ Prisma Studio - это визуальный редактор данных в в�
 
 npx prisma studio .
 //******************************************************
+//******************************************************
+
+Faker
+
+Пример генеращии правильного имени пользователя и адреса электронной почты с учётом его пола:
+import { faker } from '@faker-js/faker';
+
+function createRandomUser(): User {
+const sex = faker.person.sexType();
+const firstName = faker.person.firstName(sex);
+const lastName = faker.person.lastName();
+const email = faker.internet.email({ firstName, lastName });
+
+return {
+_id: faker.datatype.uuid(),
+avatar: faker.image.avatar(),
+birthday: faker.date.birthdate(),
+email,
+firstName,
+lastName,
+sex,
+subscriptionTier: faker.helpers.arrayElement(['free', 'basic', 'business']),
+};
+}
+
+const user = createRandomUser();
+//******************************************************
+
+Пример генерации уникальных значений с помощью пакета enforce-unique:
+
+const uniqueEnforcerEmail = new UniqueEnforcer();
+
+function createRandomUser() {
+const firstName = faker.person.firstName();
+const lastName = faker.person.lastName();
+const email = uniqueEnforcerEmail.enforce(() => {
+return faker.internet.email({firstName, lastName});
+});
+
+return {
+firstName,
+lastName,
+email,
+};
+}
+
+// You can be sure that each user in the list has unique email
+const users = []
+
+for (let i = 0; i < 100; i++) {
+users.push(createRandomUser())
+}
