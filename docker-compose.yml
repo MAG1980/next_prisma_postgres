@@ -30,6 +30,14 @@ services:
     image: 'postgres:15.3-alpine3.18'
     restart: always
 
+    # Если вы не хотите помещать переменную среды в свой файл Docker Compose,
+    # вы можете создать файл среды в корневом каталоге вашего проекта.
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USERNAME
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+
+
     # By default, a Postgres database is running on the 5432 port.
     # If we want to access the database from our computer (outside the container),
     # we must share the port with our computer's port.
@@ -48,10 +56,5 @@ services:
     ports:
       - 5432:5432
 
-    # Если вы не хотите помещать переменную среды в свой файл Docker Compose,
-    # вы можете создать файл среды в корневом каталоге вашего проекта.
-    environment:
-      - POSTGRES_DB=$DB_NAME
-      - POSTGRES_USER=$DB_USERNAME
-      - POSTGRES_PASSWORD=$DB_PASSWORD
-
+    volumes:
+      - postgres:/var/lib/postgresql/data
