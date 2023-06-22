@@ -1,14 +1,57 @@
-version: "3.8"
+# A Docker Compose must always start with the version tag.
+# We use '3' because it's the last version.
+
+# Docker Compose всегда должен начинаться с тега версии.
+# Мы используем '3', потому что это последняя версия.
+
+version: '3.7'
+
+# You should know that Docker Compose works with services.
+# 1 service = 1 container.
+# For example, a service, a server, a client, a database...
+# We use the keyword 'services' to start to create services.
+
+# Вы должны знать, что Docker Compose работает с сервисами.
+# 1 сервис = 1 контейнер.
+# Например, служба, сервер, клиент, база данных...
+# Мы используем ключевое слово «сервисы», чтобы начать создавать сервисы.
+
 services:
-  postgres:
-    image: postgres:latest
+  # The name of our service is "database"
+  # but you can use the name of your choice.
+  # Note: This may change the commands you are going to use a little bit.
+
+  # Название нашего сервиса "база данных"
+  # но вы можете использовать имя по вашему выбору.
+  # Примечание: это может немного изменить команды, которые вы собираетесь использовать.
+
+  database:
+    # Official Postgres image from DockerHub (we use 15.3-alpine3.18)
+    image: 'postgres:15.3-alpine3.18'
     restart: always
-    environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres_password
-    volumes:
-      - postgres:/var/lib/postgresql/data
+
+    # By default, a Postgres database is running on the 5432 port.
+    # If we want to access the database from our computer (outside the container),
+    # we must share the port with our computer's port.
+    # The syntax is [port we want on our machine]:[port we want to retrieve in the container]
+    # Note: You are free to change your computer's port,
+    # but take into consideration that it will change the way
+    # you are connecting to your database.
+
+    # По умолчанию база данных Postgres работает на порту 5432.
+    # Если мы хотим получить доступ к базе данных с нашего компьютера (вне контейнера),
+    # мы должны разделить порт с портом нашего компьютера.
+    # Синтаксис: [порт, который нам нужен на нашей машине]:[порт, который мы хотим получить в контейнере]
+    # Примечание: вы можете изменить порт вашего компьютера,
+    # но имейте в виду, что это изменит способ вашего подключения в вашу базу данных.
+
     ports:
-      - "5432:5432"
-volumes:
-  postgres:
+      - 5432:5432
+
+    # Если вы не хотите помещать переменную среды в свой файл Docker Compose,
+    # вы можете создать файл среды в корневом каталоге вашего проекта.
+    environment:
+      - POSTGRES_DB=$DB_NAME
+      - POSTGRES_USER=$DB_USERNAME
+      - POSTGRES_PASSWORD=$DB_PASSWORD
+
