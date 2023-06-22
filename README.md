@@ -73,6 +73,93 @@ DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=pub
 заменить действия на
     "dev": "docker-compose up && next dev",
 
+******************************************************************************
+Если при запуске Docker Compose вы получаете:
+
+PostgreSQL Database directory appears to contain a database; Skipping initialization
+вам необходимо предварительно удалить тома, которые были настроены для хранения базы данных.
+
+Команда docker-compose down не выполняет это автоматически.
+Вы можете запросить удаление томов следующим образом:
+
+docker-compose down --volumes
+
+******************************************************************************
+При первом запуске контейнера:
+
+npx prisma generate
+npx prisma migrate dev --name init
+npx prisma db seed
+
+******************************************************************************
+Устарело:
+
+Prisma Docker
+
+prismagraphql/prisma
+
+https://v1.prisma.io/docs/1.34/prisma-server/deployment-environments/docker-rty1/
+
+******************************************************************************
+Dockerize NextJS Application with Prisma
+
+Prisma в Docker
+
+Dockerfile
+# base image
+FROM node:lts
+
+# create & set working directory
+RUN mkdir -p /usr/src
+WORKDIR /usr/src
+
+# copy source files
+COPY . /usr/src
+
+COPY package*.json ./
+COPY prisma ./prisma/
+
+RUN apt-get -qy update && apt-get -qy install openssl
+
+# install dependencies
+RUN npm install
+
+RUN npm install @prisma/client
+
+COPY . .
+RUN npx prisma generate --schema ./prisma/schema.prisma
+# start app
+RUN npm run build
+EXPOSE 3000
+CMD npm run start
+
+
+docker-compose.yaml
+
+version: "3"
+
+services:
+web:
+build:
+context: .
+dockerfile: Dockerfile
+container_name: web
+restart: always
+volumes:
+- ./:/usr/src/app
+ports:
+- "3000:3000"
+env_file:
+- .env
+
+https://stackoverflow.com/questions/70684374/dockerize-nextjs-application-with-prisma
+
+******************************************************************************
+Начальный шаблон для NestJS 😻 включает GraphQL с клиентом Prisma, аутентификацию Passport-JWT
+
+https://github.com/notiz-dev/nestjs-prisma-starter/blob/nest-8-prisma-3/README.md
+
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
