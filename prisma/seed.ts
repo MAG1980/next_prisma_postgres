@@ -1,6 +1,7 @@
 import {PrismaClient} from "@prisma/client";
 import {faker} from '@faker-js/faker';
 import {EnforceUniqueError, UniqueEnforcer} from 'enforce-unique';
+import {OrderStatuses} from "@prisma/client";
 
 const prisma = new PrismaClient()
 
@@ -32,6 +33,33 @@ const getClient = () => {
     }
 }
 
+const getMathRandomInt = (max: number): number => {
+    return Math.floor(Math.random() * max)
+}
+const getObject = <T>(params: T): T => {
+    return {...params}
+}
+
+const getArray = <T>(maxQuantity: number, params: T): T[] => {
+    let result:T[] = []
+    const object = getObject(params)
+    for (let i = 1; i < maxQuantity; i++) {
+        result = [...result, object]
+    }
+    return result
+}
+
+const getRandomOrderStatus = () => {
+    let variantNumber=getMathRandomInt(4)
+    switch (variantNumber){
+        case 1: return OrderStatuses.ISSUED
+        case 2: return OrderStatuses.PAID
+        case 3: return OrderStatuses.DELIVERY
+        case 4: return OrderStatuses.READY
+        case 5: return OrderStatuses.COMPLETED
+        default:break
+    }
+}
 
 async function main() {
     //Если использовать create вместо upsert, то при каждом посеве client создавался бы заново
@@ -52,14 +80,23 @@ async function main() {
 
     //Используем Faker
     for (let i = 0; i < 10; i++) {
-
         await prisma.client.create(
             {
-                data: {...getClient()}
+                data: {
+                    ...getClient(),
+                    orders: {
+                        create: [
+                            ...getArray(3, {status:getRandomOrderStatus()})
+                        ]
+                    }
+                }
+
             }
         )
     }
 }
+
+
 
 main()
     .then(() => prisma.$disconnect())

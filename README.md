@@ -84,6 +84,29 @@ PostgreSQL Database directory appears to contain a database; Skipping initializa
 
 docker-compose down --volumes
 
+Может возникать ошибка:
+volume is in use - ...
+
+Т.к. том может использоваться одним из остановленных контейнеров.
+Вы можете удалить такие контейнеры командой:
+
+docker container prune
+
+затем вы можете удалить неиспользуемые тома
+
+docker volume prune
+
+
+Вы всегда можете использовать
+docker system prune -a
+, чтобы избавиться от старой сети.
+Это не приведет к удалению ваших томов.
+docker-compose up --build -d
+В следующий раз потребуется больше времени, 
+но это поможет вам решить текущую проблему.
+
+docker-compose up --force-recreate --remove-orphans
+
 ******************************************************************************
 При первом запуске контейнера:
 

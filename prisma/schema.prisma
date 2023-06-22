@@ -17,7 +17,7 @@ model Client {
   lastName    String?
   phoneNumber String? @unique
   email       String? @unique
-  crders      Order[]
+  orders      Order[]
   cart        Cart?
 }
 
