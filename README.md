@@ -182,7 +182,28 @@ https://stackoverflow.com/questions/70684374/dockerize-nextjs-application-with-p
 
 https://github.com/notiz-dev/nestjs-prisma-starter/blob/nest-8-prisma-3/README.md
 
+******************************************************************************
+Отношения Prisma "многие ко многим": создание и подключение
+https://stackoverflow.com/questions/65950407/prisma-many-to-many-relations-create-and-connect
 
+      await prisma.post.create({
+        data: {
+          title: 'Hello',
+          categories: {
+            create: [
+              {
+                category: {
+                  create: {
+                    name: 'category-1',
+                  },
+                },
+              },
+              { category: { connect: { id: 10 } } },
+            ],
+          },
+        },
+      });
+******************************************************************************
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
