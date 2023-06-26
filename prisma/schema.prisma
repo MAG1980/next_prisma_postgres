@@ -32,20 +32,18 @@ model Good {
   id          Int             @id @default(autoincrement())
   name        String          @unique
   basePrise   Float
-  ingredients Json
+  ingredients Json?
   description String
   carts       CartsOnGoods[]
-  goods       GoodsOnOrders[]
-  GoodsImage  GoodsImage[]
+  orders      GoodsOnOrders[]
+  goodsImages GoodsImage[]
 }
 
 model CartsOnGoods {
-  cart         Cart     @relation(fields: [cartId], references: [id])
-  cartId       Int
-  good         Good     @relation(fields: [goodId], references: [id])
-  goodId       Int
-  goodQuantity Int
-  assignedAt   DateTime @default(now())
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+  good   Good @relation(fields: [goodId], references: [id])
+  goodId Int
 
   @@id([cartId, goodId])
 }
