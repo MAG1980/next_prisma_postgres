@@ -67,12 +67,10 @@ model Order {
 }
 
 model GoodsOnOrders {
-  good         Good     @relation(fields: [goodId], references: [id])
-  goodId       Int
-  order        Order    @relation(fields: [orderId], references: [id])
-  orderId      Int
-  goodQuantity Int
-  assignedAt   DateTime @default(now())
+  good    Good  @relation(fields: [goodId], references: [id])
+  goodId  Int
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
 
   @@id([goodId, orderId])
 }

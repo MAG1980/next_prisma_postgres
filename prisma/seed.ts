@@ -1,8 +1,7 @@
 const {prisma} = require("../lib/prisma")
 
-const {getArray} = require("./helpers/general_use")
+const {getOrders} = require("./helpers/Order")
 const {getClient} = require("./helpers/Client")
-const {getRandomOrderStatus} = require("./helpers/Order")
 
 
 async function main() {
@@ -30,7 +29,7 @@ async function main() {
                     ...getClient(),
                     orders: {
                         create: [
-                            ...getArray(3, {status:getRandomOrderStatus()})
+                            ...getOrders(3)
                         ]
                     }
                 }

@@ -204,6 +204,30 @@ https://stackoverflow.com/questions/65950407/prisma-many-to-many-relations-creat
         },
       });
 ******************************************************************************
+Объявление пользовательских типов данных
+
+Начиная с NestJS 11, рекомендация для next-env.d.ts файла была изменена, поскольку теперь он обновляется при каждой
+сборке.
+Вам не следует редактировать его, а вместо этого создать новый файл для ваших собственных типов и добавить его в свой
+tsconfig.json include.
+Но для перечислений вам ничего этого не нужно, просто объявите его в обычном .ts файле и импортируйте их обычным
+образом.
+https://nextjs.org/docs/basic-features/typescript
+Файл с именем next-env.d.ts будет создан в корне вашего проекта. Этот файл гарантирует Next.js что компилятор TypeScript
+подберет типы.
+Вам не следует удалять его или редактировать, поскольку он может измениться в любое время.
+Этот файл не должен быть зафиксирован и должен игнорироваться системой управления версиями (например, внутри вашего
+файла .gitignore).
+Вместо редактирования next-env.d.ts вы можете включить дополнительные типы, добавив новый файл, например,
+additional.d.ts, а затем сославшись на него в массиве include в вашем tsconfig.json.
+******************************************************************************
+Seeding ("посев") с использованием отношения многие ко многим
+
+prisma-seed-many-to-many
+https://github.com/sbking/prisma-seed-many-to-many/blob/main/prisma/seed.ts
+******************************************************************************
+This is a [Next.js](https://nextjs.org/) project bootstrapped
+with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
