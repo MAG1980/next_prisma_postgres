@@ -1,4 +1,4 @@
-import {faker} from '@faker-js/faker';
+import {fakerRU as faker} from '@faker-js/faker';
 import {UniqueEnforcer} from 'enforce-unique';
 import {GoodsImage} from "@prisma/client";
 

@@ -1,4 +1,4 @@
-import {faker} from '@faker-js/faker';
+import {fakerRU as faker} from '@faker-js/faker';
 import {OrderStatuses} from "@prisma/client";
 
 const {getMathRandomInt} = require("./general_use")

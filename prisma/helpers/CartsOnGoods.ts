@@ -1,6 +1,6 @@
 import {Cart, Good, CartsOnGoods} from "@prisma/client";
 import {prisma} from "../../lib/prisma";
-import {faker} from "@faker-js/faker";
+import {fakerRU as faker} from "@faker-js/faker";
 
 /**
  * "Посев" связей между товарами и корзинами
@@ -19,7 +19,7 @@ export const seedCartsOnGoods = async (maxGoodsAmount: number): Promise<void> =>
             return {
                 cartId: cart.id,
                 goodId: good.id,
-            }
+            } as CartsOnGoods
         });
     });
 

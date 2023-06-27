@@ -1,6 +1,6 @@
 import {Good, GoodsOnOrders, Order} from "@prisma/client";
 import {prisma} from "../../lib/prisma";
-import {faker} from "@faker-js/faker";
+import {fakerRU as faker} from "@faker-js/faker";
 
 /**
  * "Посев" связей между товарами и заказами
