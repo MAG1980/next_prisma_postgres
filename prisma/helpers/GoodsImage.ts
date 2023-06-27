@@ -18,8 +18,9 @@ export const getLink = (): string => uniqueEnforcerLink.enforce(() => {
     } as GoodsImage
 }*/
 
-export const getImages = (amount:number):GoodsImage[] => {
-    return Array.from({length: amount}, () => (
+export const getImages = (maxImagesAmount:number):GoodsImage[] => {
+    const randomImagesAmount = faker.number.int({min: 1, max: maxImagesAmount})
+    return Array.from({length: randomImagesAmount}, () => (
         {
             link: getLink(),
             fileSize: faker.number.int({min: 1500000, max: 3500000})

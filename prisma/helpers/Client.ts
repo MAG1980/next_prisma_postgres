@@ -1,5 +1,7 @@
 import {faker} from '@faker-js/faker';
-import {EnforceUniqueError, UniqueEnforcer} from 'enforce-unique';
+import {UniqueEnforcer} from 'enforce-unique';
+import {prisma} from "../../lib/prisma";
+import {getOrders} from "../helpers/Order";
 const uniqueEnforcerLogin = new UniqueEnforcer();
 const uniqueEnforcerEmail = new UniqueEnforcer();
 const uniqueEnforcerPhone = new UniqueEnforcer();
@@ -25,6 +27,28 @@ export const getClient = () => {
         login: getLogin(),
         email: getEmail(firstName, lastName),
         phoneNumber: getPhoneNumber()
+    }
+}
+
+/**
+ * "Посев" клиентов с заказами
+ * @param clientsAmount количество клиентов
+ * @param maxOrdersAmount максимальное количество заказов у каждого клиента
+ */
+export const seedsClientsWithOrders = async (clientsAmount:number, maxOrdersAmount:number):Promise<void> => {
+    for (let i = 0; i < clientsAmount; i++) {
+        await prisma.client.create(
+            {
+                data: {
+                    ...getClient(),
+                    orders: {
+                        create: [
+                            ...getOrders(maxOrdersAmount)
+                        ]
+                    }
+                }
+            }
+        )
     }
 }
 

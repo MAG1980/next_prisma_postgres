@@ -1,7 +1,7 @@
-// const faker = require('@faker-js/faker')
 import {faker} from '@faker-js/faker';
 import {UniqueEnforcer} from 'enforce-unique';
-import {Good} from "@prisma/client";
+import {prisma} from "../../lib/prisma";
+import {getImages} from "./GoodsImage";
 
 const uniqueEnforcerName = new UniqueEnforcer();
 
@@ -9,14 +9,36 @@ export const getName = (): string => uniqueEnforcerName.enforce(() => {
     console.log(faker.commerce.productName())
     return faker.commerce.productName();
 });
-export const getGood = (): Good => {
+export const getGood = () => {
     return {
         name: getName(),
-        basePrise: Number(faker.commerce.price({min: 10, max: 200})),
-        // ingredients Json
+        basePrice: Number(faker.commerce.price({min: 10, max: 200})),
+        ingredients:JSON.stringify({}),
         description: faker.commerce.productDescription()
         // carts       CartsOnGoods[]
         // goods       GoodsOnOrders[]
         // GoodsImage  GoodsImage[]
-    } as Good
+    }
+}
+
+/**
+ * "Посев" товаров с изображениями
+ * @param goodsAmount количество товаров
+ * @param maxImagesAmount максимальное количество изображений у товара
+ */
+export const seedsGoodsWithImages = async (goodsAmount:number, maxImagesAmount:number):Promise<void>=>{
+    for (let i = 0; i < goodsAmount; i++) {
+        await prisma.good.create(
+            {
+                data: {
+                    ...getGood(),
+                    goodsImages: {
+                        create: [
+                            ...getImages(maxImagesAmount)
+                        ]
+                    }
+                }
+            }
+        )
+    }
 }

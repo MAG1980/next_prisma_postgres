@@ -1,4 +1,4 @@
-const faker = require('@faker-js/faker')
+import {faker} from '@faker-js/faker';
 import {OrderStatuses} from "@prisma/client";
 
 const {getMathRandomInt} = require("./general_use")
@@ -24,10 +24,10 @@ export const getOrder = (): { status: OrderStatuses | undefined } => {
     return {status: getRandomOrderStatus()}
 }
 
-export const getOrders = (maxQuantity: number) => {
+export const getOrders = (maxOrdersAmount: number) => {
     let result: { status: OrderStatuses | undefined }[] = []
-
-    for (let i = 1; i < maxQuantity; i++) {
+    const ordersAmount = faker.number.int({min: 0, max: maxOrdersAmount})
+    for (let i = 0; i < ordersAmount; i++) {
         let order = {
             ...getOrder(),
         }
