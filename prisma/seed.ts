@@ -1,65 +1,9 @@
-import {PrismaClient} from "@prisma/client";
-import {faker} from '@faker-js/faker';
-import {EnforceUniqueError, UniqueEnforcer} from 'enforce-unique';
-import {OrderStatuses} from "@prisma/client";
+const {prisma} = require("../lib/prisma")
 
-const prisma = new PrismaClient()
-
-const uniqueEnforcerLogin = new UniqueEnforcer();
-const uniqueEnforcerEmail = new UniqueEnforcer();
-const uniqueEnforcerPhone = new UniqueEnforcer();
-
-const getLogin = (): string => uniqueEnforcerLogin.enforce(() => {
-    return faker.internet.userName()
-})
-
-const getEmail = (firstName: string, lastName: string): string => uniqueEnforcerEmail.enforce(() => {
-    return faker.internet.email({firstName, lastName});
-});
-
-const getPhoneNumber = (): string => uniqueEnforcerPhone.enforce(() => {
-    return faker.phone.number()
-})
-
-const getClient = () => {
-    const firstName = faker.person.firstName();
-    const lastName = faker.person.lastName();
-    return {
-        firstName,
-        lastName,
-        login: getLogin(),
-        email: getEmail(firstName, lastName),
-        phoneNumber: getPhoneNumber()
-    }
-}
-
-const getMathRandomInt = (max: number): number => {
-    return Math.floor(Math.random() * max)
-}
-const getObject = <T>(params: T): T => {
-    return {...params}
-}
-
-const getArray = <T>(maxQuantity: number, params: T): T[] => {
-    let result:T[] = []
-    const object = getObject(params)
-    for (let i = 1; i < maxQuantity; i++) {
-        result = [...result, object]
-    }
-    return result
-}
-
-const getRandomOrderStatus = () => {
-    let variantNumber=getMathRandomInt(4)
-    switch (variantNumber){
-        case 1: return OrderStatuses.ISSUED
-        case 2: return OrderStatuses.PAID
-        case 3: return OrderStatuses.DELIVERY
-        case 4: return OrderStatuses.READY
-        case 5: return OrderStatuses.COMPLETED
-        default:break
-    }
-}
+import {seedsClientsWithOrders} from "./helpers/Client"
+import {seedsGoodsWithImages} from "./helpers/Good"
+import {seedGoodsOnOrders} from "./helpers/GoodsOnOrders"
+import {seedCartsOnGoods} from "./helpers/CartsOnGoods"
 
 async function main() {
     //Если использовать create вместо upsert, то при каждом посеве client создавался бы заново
@@ -78,25 +22,18 @@ async function main() {
     })
     console.log(client)
 
-    //Используем Faker
-    for (let i = 0; i < 10; i++) {
-        await prisma.client.create(
-            {
-                data: {
-                    ...getClient(),
-                    orders: {
-                        create: [
-                            ...getArray(3, {status:getRandomOrderStatus()})
-                        ]
-                    }
-                }
+    //Создаём клиентов с заказами
+    await seedsClientsWithOrders(5, 3)
 
-            }
-        )
-    }
+    //Создаём товары с изображениями
+    await seedsGoodsWithImages(10, 3)
+
+    //Создаём связи между товарами и заказами
+    await seedGoodsOnOrders(3)
+
+    //Создаём связи между товарами и корзинами
+    await seedCartsOnGoods(3)
 }
-
-
 
 main()
     .then(() => prisma.$disconnect())

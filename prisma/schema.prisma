@@ -31,21 +31,19 @@ model Cart {
 model Good {
   id          Int             @id @default(autoincrement())
   name        String          @unique
-  basePrise   Float
-  ingredients Json
+  basePrice   Float
+  ingredients Json?
   description String
   carts       CartsOnGoods[]
-  goods       GoodsOnOrders[]
-  GoodsImage  GoodsImage[]
+  orders      GoodsOnOrders[]
+  goodsImages GoodsImage[]
 }
 
 model CartsOnGoods {
-  cart         Cart     @relation(fields: [cartId], references: [id])
-  cartId       Int
-  good         Good     @relation(fields: [goodId], references: [id])
-  goodId       Int
-  goodQuantity Int
-  assignedAt   DateTime @default(now())
+  cart   Cart @relation(fields: [cartId], references: [id])
+  cartId Int
+  good   Good @relation(fields: [goodId], references: [id])
+  goodId Int
 
   @@id([cartId, goodId])
 }
@@ -67,12 +65,10 @@ model Order {
 }
 
 model GoodsOnOrders {
-  good         Good     @relation(fields: [goodId], references: [id])
-  goodId       Int
-  order        Order    @relation(fields: [orderId], references: [id])
-  orderId      Int
-  goodQuantity Int
-  assignedAt   DateTime @default(now())
+  good    Good  @relation(fields: [goodId], references: [id])
+  goodId  Int
+  order   Order @relation(fields: [orderId], references: [id])
+  orderId Int
 
   @@id([goodId, orderId])
 }
