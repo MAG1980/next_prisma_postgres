@@ -3,6 +3,7 @@ const {prisma} = require("../lib/prisma")
 import {seedsClientsWithOrders} from "./helpers/Client"
 import {seedsGoodsWithImages} from "./helpers/Good"
 import {seedGoodsOnOrders} from "./helpers/GoodsOnOrders"
+import {seedCartsOnGoods} from "./helpers/CartsOnGoods"
 
 async function main() {
     //Если использовать create вместо upsert, то при каждом посеве client создавался бы заново
@@ -29,6 +30,9 @@ async function main() {
 
     //Создаём связи между товарами и заказами
     await seedGoodsOnOrders(3)
+
+    //Создаём связи между товарами и корзинами
+    await seedCartsOnGoods(3)
 }
 
 main()
