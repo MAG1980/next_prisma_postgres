@@ -6,9 +6,6 @@ const clientsOrdersGoods = Prisma.validator<Prisma.ClientInclude>()({
     orders: true,
 })
 
-const orderGoods = Prisma.validator<Prisma.OrderInclude>()({
-    goods: true
-})
 
 const Test = async () => {
 
