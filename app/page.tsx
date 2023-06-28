@@ -3,6 +3,7 @@ import Burgers from "@/components/Burgers";
 import Combo from "@/components/Combo";
 import HeaderHome from "@/components/HeaderHome";
 import Salads from "@/components/Salads";
+import Test from "@/components/Test";
 
 
 export default function Home() {
@@ -13,6 +14,7 @@ export default function Home() {
       <Combo />
       <Burgers />
       <Salads />
+      <Test />
       
     </>
   )
