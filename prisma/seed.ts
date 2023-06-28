@@ -23,13 +23,13 @@ async function main() {
     console.log(client)
 
     //Создаём клиентов с заказами
-    await seedsClientsWithOrders(5, 3)
+    await seedsClientsWithOrders(50, 3)
 
     //Создаём товары с изображениями
-    await seedsGoodsWithImages(10, 3)
+    await seedsGoodsWithImages(100, 3)
 
     //Создаём связи между товарами и заказами
-    await seedGoodsOnOrders(3)
+    await seedGoodsOnOrders(5)
 
     //Создаём связи между товарами и корзинами
     await seedCartsOnGoods(3)
