@@ -32,7 +32,7 @@ async function main() {
     await seedGoodsOnOrders(5)
 
     //Создаём связи между товарами и корзинами
-    await seedCartsOnGoods(3)
+    // await seedCartsOnGoods(3)
 }
 
 main()
