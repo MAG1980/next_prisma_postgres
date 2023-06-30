@@ -22,30 +22,21 @@ model Client {
 }
 
 model Cart {
-  id       Int            @id @default(autoincrement())
-  client   Client         @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId Int            @unique
-  goods    CartsOnGoods[]
+  id       Int    @id @default(autoincrement())
+  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int    @unique
+  goods    Good[]
 }
 
 model Good {
-  id          Int             @id @default(autoincrement())
-  name        String          @unique
+  id          Int          @id @default(autoincrement())
+  name        String       @unique
   basePrice   Float
   ingredients Json?
   description String
-  carts       CartsOnGoods[]
-  orders      GoodsOnOrders[]
+  carts       Cart[]
+  orders      Order[]
   goodsImages GoodsImage[]
-}
-
-model CartsOnGoods {
-  cart   Cart @relation(fields: [cartId], references: [id])
-  cartId Int
-  good   Good @relation(fields: [goodId], references: [id])
-  goodId Int
-
-  @@id([cartId, goodId])
 }
 
 enum OrderStatuses {
@@ -57,20 +48,11 @@ enum OrderStatuses {
 }
 
 model Order {
-  id       Int             @id @default(autoincrement())
-  client   Client          @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  id       Int           @id @default(autoincrement())
+  client   Client        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId Int
-  status   OrderStatuses   @default(ISSUED)
-  goods    GoodsOnOrders[]
-}
-
-model GoodsOnOrders {
-  good    Good  @relation(fields: [goodId], references: [id])
-  goodId  Int
-  order   Order @relation(fields: [orderId], references: [id])
-  orderId Int
-
-  @@id([goodId, orderId])
+  status   OrderStatuses @default(ISSUED)
+  goods    Good[]
 }
 
 model GoodsImage {
