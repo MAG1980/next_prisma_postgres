@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client'
 import { prisma } from "@/lib/prisma";
-import { Client, Good, GoodsOnOrders, Order } from "@prisma/client";
+import { Client, Good, Order } from "@prisma/client";
 
 const clientsOrdersGoods = Prisma.validator<Prisma.ClientInclude>()({
     orders: true,
