@@ -1,9 +1,12 @@
 import {NextResponse} from 'next/server'
 import {prisma} from '@/lib/prisma'
 
-export async function GET(request: Request) {
-    const {searchParams} = new URL(request.url)
-    const id = Number(searchParams.get('id'))
+export async function GET(
+    request: Request,
+    {params}: { params: { id: string } }) {
+
+    // const id =params.id
+    const {id} = params
     console.log(id)
 
     if (id === null) {
@@ -12,7 +15,7 @@ export async function GET(request: Request) {
 
     const good = await prisma.good.findUnique({
         where: {
-            id: id
+            id: Number(id)
         }
     })
 
