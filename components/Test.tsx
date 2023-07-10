@@ -1,10 +1,27 @@
-import { Prisma } from '@prisma/client'
-import { prisma } from "@/lib/prisma";
-import { Client, Good, GoodsOnOrders, Order } from "@prisma/client";
+import {Prisma, Good} from '@prisma/client'
+import {prisma} from "@/lib/prisma";
+import {keys} from "@mui/system";
 
 const clientsOrdersGoods = Prisma.validator<Prisma.ClientInclude>()({
     orders: true,
 })
+
+const getGood =async (goodId:number):Promise<Good>=>{
+    return prisma.good.findUnique({
+        where: {
+            id: goodId
+        }
+    });
+}
+
+const renderGood = async (goodId:number)=>{
+    const good = await getGood(goodId)
+    console.log(good)
+return Object.keys(good).map((key:string) =>{
+    return  <li>{key}: {good[key]}</li>
+})
+
+}
 
 
 const Test = async () => {
@@ -16,34 +33,36 @@ const Test = async () => {
         include: {
             orders: {
                 include: {
-                    goods:true
+                    goods: true
                 }
             }
         }
     })
-
-
 
     return (
         <div>
             <div>
                 {clientsWithOrders.map((client,) => (
                     <ul key={client.id}>
+                        <li><h2>Клиент ID: {client.id}</h2></li>
                         <li>{client.login}</li>
-                        <li>{client.firstName}</li>
-                        <li>{client.lastName}</li>
-                        <li>{client.email}</li>
-                        <li>{client.phoneNumber}</li>
+                        <li>{client.firstName} {client.lastName} {client.email} {client.phoneNumber}</li>
+                        <li><h3>Заказы:</h3></li>
                         <li>{client.orders.map(order => (
                             <div>
                                 <ul>
-                                    <li>{order.id}</li>
-                                    <li>{order.status}</li>
+                                    <li><h4>Номер заказа: {order.id}</h4></li>
+                                    <li>Статус заказа: {order.status}</li>
+                                    <li><h5>Состав заказа:</h5></li>
                                     <li>
                                         <div>
                                             <ul>
-                                                {order.goods.map(good=>(
-                                                    <li>{good.goodId}</li>
+                                                {order.goods.map(async good => (
+                                                    <>
+                                                        <li><h6>Товар</h6></li>
+                                                        {await renderGood(good.goodId)}
+                                                        {/*<li>Название{good.name}</li>*/}
+                                                    </>
                                                 ))}
                                             </ul>
                                         </div>
