@@ -1,4 +1,4 @@
-import {Prisma} from '@prisma/client'
+import {Prisma, Good} from '@prisma/client'
 import {prisma} from "@/lib/prisma";
 import {keys} from "@mui/system";
 
