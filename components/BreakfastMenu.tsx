@@ -4,11 +4,12 @@ import Card from 'react-bootstrap/Card';
 import {Prisma, Good} from '@prisma/client'
 
 const goodsWithImages = Prisma.validator<Prisma.GoodInclude>()({
-    goodsImages: true,
-})
-const BreakfastMenu = ({goods}) => {
+     goodsImages: true,
+ })
 
-    console.log(goods)
+const BreakfastMenu = ({goods}:{goodsWithImages}) => {
+
+console.log(goods)
 
     return (
         <div className="container">
@@ -30,7 +31,6 @@ const BreakfastMenu = ({goods}) => {
 
             </div>
         </div>
-
     )
 }
 
