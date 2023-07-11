@@ -6,6 +6,10 @@ import {Prisma, Good} from '@prisma/client'
 const goodsWithImages = Prisma.validator<Prisma.GoodInclude>()({
     goodsImages: true,
 })
+
+export interface IBreakfastMenuProps{
+    goods:Good[]
+}
 const BreakfastMenu = ({goods}) => {
 
     console.log(goods)
