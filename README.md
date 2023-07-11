@@ -204,6 +204,27 @@ https://stackoverflow.com/questions/65950407/prisma-many-to-many-relations-creat
         },
       });
 ******************************************************************************
+
+Создание простого API в Next.js 13
+https://codevoweb.com/build-a-simple-api-in-next-js-13-app-directory/
+
+******************************************************************************
+
+Request Body FormData
+https://nextjs.org/docs/app/building-your-application/routing/router-handlers#request-body
+
+******************************************************************************
+
+Обработка ошибок в Next.js 13
+https://nextjs.org/docs/app/building-your-application/routing/error-handling
+
+(Устаревшее) Отслеживание ошибок рендеринга с границей ошибки (React)
+https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary
+
+Коды ошибок Prisma
+https://www.prisma.io/docs/reference/api-reference/error-reference#error-codes
+
+******************************************************************************
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
