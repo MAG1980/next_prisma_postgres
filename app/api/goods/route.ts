@@ -3,8 +3,14 @@ import {prisma} from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
     // Извлекаем строковые значения query-параметров: номер текущей страницы и количество записей на странице
-    const pageNumberStr = request.nextUrl.searchParams.get('page')
-    const limitStr = request.nextUrl.searchParams.get('limit')
+
+    // const pagination = JSON.parse(request.nextUrl.searchParams.get('pagination'))
+    // const {page, perPage} = pagination
+    // console.log("page: ", page)
+
+
+    const pageNumberStr = request.nextUrl.searchParams.get('page') as string
+    const limitStr = request.nextUrl.searchParams.get('perPage') as string
 
     // Преобразуем строковые значения в цифровые (десятичная система счисления - radix)
     const pageNumber = pageNumberStr ? parseInt(pageNumberStr, 10) : 1
@@ -17,13 +23,31 @@ export async function GET(request: NextRequest) {
         take: limit
     })
 
+    const total = await prisma.good.aggregate({
+        _count: true
+    })
+
     let response = {
         status: 'success',
         results: goods.length,
-        goods
+        pagination: {
+            page: pageNumber,
+            perPage: limit
+        },
+        total: total._count,
+        data: goods,
     }
 
-    return NextResponse.json(response)
+    // return NextResponse.json(response)
+    return new NextResponse(
+        JSON.stringify(response),
+        {
+            status: 200,
+            headers: {
+                "Content-Type": "application/json",
+                'content-range': total._count.toString()
+            }
+        })
 }
 
 export async function POST(request: Request) {

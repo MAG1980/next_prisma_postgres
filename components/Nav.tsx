@@ -13,6 +13,7 @@ const Nav = () => {
                 <Link href="/delivery">Доставка и оплата</Link>
                 <Link href="/stocks">Акции</Link>
                 <Link href="/contact">Контакты</Link>
+                <Link href="/admin">Панель администратора</Link>
             </div>
             <div className="book_room">
                 <SocialIcon url="https://vk.com/jaketrent" style={{ height: 35, width: 35 }} bgColor="#fff" />

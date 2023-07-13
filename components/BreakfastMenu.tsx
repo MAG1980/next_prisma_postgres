@@ -21,7 +21,7 @@ const BreakfastMenu = ({goods}) => {
             <div className="breakfast_menu">
                 {goods.map((good: Good) => (
                     <Card style={{width: '25rem'}}>
-                        <Card.Img variant="top" src={good.goodsImages[0].link}/>
+                        <Card.Img variant="top" src={good.goodsImages[0]?.link}/>
                         <Card.Body>
                             <Card.Title>{good.name}</Card.Title>
                             <Card.Text>

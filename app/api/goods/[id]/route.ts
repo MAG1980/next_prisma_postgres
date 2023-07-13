@@ -36,11 +36,11 @@ export async function GET(
     const response = {
         status: "success",
         data: {
-            good
+            ...good
         }
     }
 
-    return NextResponse.json({response})
+    return NextResponse.json({...response})
 }
 
 export async function PATCH(request: Request, {params}: { params: { id: string } }) {
