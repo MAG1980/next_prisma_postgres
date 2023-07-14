@@ -26,20 +26,15 @@ export const dataProvider: DataProvider = {
 
         const response = httpClient(url).then(({headers, json}) => {
             console.log(json)
-            return{
+            return {
                 data: json.data,
-                total: parseInt(headers.get('content-range').split('/').pop(), 10),
-                // total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
+                // total: parseInt(headers.get('content-range').split('/').pop(), 10),
+                total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
             }
         });
         console.log(response)
         return response
     },
-
-    getOne: (resource, params) =>
-        httpClient(`${apiUrl}/${resource}/${params.id}`).then(({json}) => ({
-            data: json.data,
-        })),
 
     getMany: (resource, params) => {
         const query = {
@@ -47,6 +42,16 @@ export const dataProvider: DataProvider = {
         };
         const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({json}) => ({data: json.data}));
+    },
+
+
+    getOne: (resource, params) => {
+        const url = `${apiUrl}/${resource}/${params.id}`
+        console.log(url)
+        return httpClient(url).then(({json}) => ({
+                data: json.data,
+            })
+        )
     },
 
     /*    getManyReference: (resource, params) => {
@@ -68,11 +73,13 @@ export const dataProvider: DataProvider = {
             }));
         },*/
 
-    /*    update: (resource, params) =>
-            httpClient(`${apiUrl}/${resource}/${params.id}`, {
+        update: (resource, params) => {
+            console.log(params)
+            return httpClient(`${apiUrl}/${resource}/${params.id}`, {
                 method: 'PUT',
                 body: JSON.stringify(params.data),
-            }).then(({ json }) => ({ data: json })),*/
+            }).then(({json}) => ({data: json.data}))
+        },
 
     /*    updateMany: (resource, params) => {
             const query = {
@@ -84,18 +91,21 @@ export const dataProvider: DataProvider = {
             }).then(({ json }) => ({ data: json }));
         },*/
 
-    /*    create: (resource, params) =>
-            httpClient(`${apiUrl}/${resource}`, {
-                method: 'POST',
-                body: JSON.stringify(params.data),
-            }).then(({ json }) => ({
-                data: { ...params.data, id: json.id },
-            })),*/
+    create: (resource, params) => {
+        console.log(params)
+        return httpClient(`${apiUrl}/${resource}`, {
+            method: 'POST',
+            body: JSON.stringify(params.data),
+        }).then(({json}) => ({
+            data: {...params.data, id: json.id},
+        }))
+    }
+    ,
 
-    /*    delete: (resource, params) =>
-            httpClient(`${apiUrl}/${resource}/${params.id}`, {
-                method: 'DELETE',
-            }).then(({ json }) => ({ data: json })),*/
+    delete: (resource, params) =>
+        httpClient(`${apiUrl}/${resource}/${params.id}`, {
+            method: 'DELETE',
+        }).then(({json}) => ({data: json.data})),
 
     /*    deleteMany: (resource, params) => {
             const query = {

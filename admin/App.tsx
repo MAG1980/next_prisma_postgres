@@ -1,24 +1,17 @@
 import {ReactElement} from "react";
 // import jsonServerProvider from 'ra-data-json-server';
-import {Admin, ListGuesser, Resource} from "react-admin";
+import {Admin, EditGuesser, ListGuesser, Resource, ShowGuesser} from "react-admin";
 import {dataProvider} from "@/admin/dataProvider"
-import {GoodShow} from "@/admin/GoodShow";
-import {GoodList} from "@/admin/GoodList";
+import {ListGood} from "@/admin/components/Good/ListGood";
+import {CreateGood} from "@/admin/components/Good/CreateGood";
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 
 const App = (): ReactElement => (
     <div>
+        <h1>Admin Panel</h1>
         <Admin dataProvider={dataProvider}>
-            <h1>Admin Panel</h1>
-            {/*<Resource name="goods" list={GoodList}/>*/}
-
-            <Resource name="goods" list={ListGuesser}/>
-
-            {/*<Resource name="goods" show={GoodShow}/>*/}
+            <Resource name="goods" list={ListGuesser} create={CreateGood} edit={EditGuesser} show={ShowGuesser} recordRepresentation="name" />
         </Admin>
     </div>
-
-    // <h1>Admin Panel</h1>
-
 );
 export default App

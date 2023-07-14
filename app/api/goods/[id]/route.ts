@@ -14,9 +14,9 @@ export async function GET(
         where: {
             id: parseInt(id, 10)
         },
-        include: {
+/*        include: {
             goodsImages: true
-        }
+        }*/
     })
 
     if (!good) {
@@ -43,7 +43,7 @@ export async function GET(
     return NextResponse.json({...response})
 }
 
-export async function PATCH(request: Request, {params}: { params: { id: string } }) {
+export async function PUT(request: Request, {params}: { params: { id: string } }) {
     try {
         const id = params.id
         const requestData = await request.json()
@@ -57,7 +57,7 @@ export async function PATCH(request: Request, {params}: { params: { id: string }
         const response = {
             status: "success",
             data: {
-                good: updatedGood
+                ...updatedGood
             }
         }
         return NextResponse.json(response)

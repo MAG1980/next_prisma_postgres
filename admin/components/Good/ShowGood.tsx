@@ -5,7 +5,7 @@ function SimpleShowLayout(props: { children: ReactNode }) {
     return null;
 }
 
-export const GoodShow = () => {
+export const ShowGood = () => {
     return (
         <Show>
             <SimpleShowLayout>
