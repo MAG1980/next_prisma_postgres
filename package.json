@@ -26,6 +26,7 @@
     "eslint-config-next": "13.4.6",
     "next": "13.4.6",
     "postcss": "8.4.24",
+    "ra-input-rich-text": "^4.12.1",
     "react": "18.2.0",
     "react-admin": "^4.12.1",
     "react-bootstrap": "^2.7.4",
