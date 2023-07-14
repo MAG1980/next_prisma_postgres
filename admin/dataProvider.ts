@@ -8,7 +8,6 @@ const httpClient = fetchUtils.fetchJson;
 
 export const dataProvider: DataProvider = {
     getList: (resource, params) => {
-        console.log(params)
         const {page, perPage} = params.pagination;
 
         // const { field, order } = params.sort;
@@ -22,17 +21,14 @@ export const dataProvider: DataProvider = {
         //Из параметров запроса React-Admin формируем URL-адрес нашего API с необходимыми query-параметрами
         //Функция stringify из полученного объекта формирует строку query-параметров вида: page=2&perPage=10
         const url = `${apiUrl}/${resource}?${stringify({page: page, perPage: perPage})}`;
-        console.log(url)
 
         const response = httpClient(url).then(({headers, json}) => {
-            console.log(json)
             return {
                 data: json.data,
                 // total: parseInt(headers.get('content-range').split('/').pop(), 10),
                 total: parseInt((headers.get('content-range') || "0").split('/').pop() || 0, 10),
             }
         });
-        console.log(response)
         return response
     },
 
@@ -99,20 +95,22 @@ export const dataProvider: DataProvider = {
         }).then(({json}) => ({
             data: {...params.data, id: json.id},
         }))
-    }
-    ,
+    },
 
     delete: (resource, params) =>
         httpClient(`${apiUrl}/${resource}/${params.id}`, {
             method: 'DELETE',
         }).then(({json}) => ({data: json.data})),
 
-    /*    deleteMany: (resource, params) => {
-            const query = {
-                filter: JSON.stringify({ id: params.ids}),
-            };
-            return httpClient(`${apiUrl}/${resource}?${stringify(query)}`, {
-                method: 'DELETE',
-            }).then(({ json }) => ({ data: json }));
-        }*/
+    deleteMany: (resource, params) => {
+        const idsString = params.ids.join(',')
+        const url = `${apiUrl}/${resource}/${idsString}`
+
+        return httpClient(url, {
+            method: 'DELETE',
+        }).then(({json}) => {
+            console.log(json)
+            return ({data: json.data})
+        });
+    }
 };

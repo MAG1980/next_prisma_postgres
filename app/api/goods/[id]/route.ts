@@ -99,15 +99,19 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
 export async function DELETE(
     request: Request,
     {params}: { params: { id: string } }) {
-
+    console.log(params)
+    const ids = params.id.split(',').map(Number)
+    console.log(ids)
     try {
         const {id} = params
-        await prisma.good.delete({
+        const data = await prisma.good.deleteMany({
             where: {
-                id: parseInt(id, 10)
+                id: {in: [...ids]}
             }
         })
-        return new NextResponse(null, {status: 204})
+        return new NextResponse(
+            JSON.stringify(data),
+            {status: 202})
 
     } catch (error: any) {
         if (error.code === "P2025") {
