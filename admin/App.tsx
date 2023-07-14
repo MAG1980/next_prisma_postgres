@@ -4,13 +4,14 @@ import {Admin, EditGuesser, ListGuesser, Resource, ShowGuesser} from "react-admi
 import {dataProvider} from "@/admin/dataProvider"
 import {ListGood} from "@/admin/components/Good/ListGood";
 import {CreateGood} from "@/admin/components/Good/CreateGood";
+import {EditGood} from "@/admin/components/Good/EditGood";
 // const dataProvider = jsonServerProvider('https://jsonplaceholder.typicode.com');
 
 const App = (): ReactElement => (
     <div>
         <h1>Admin Panel</h1>
         <Admin dataProvider={dataProvider}>
-            <Resource name="goods" list={ListGuesser} create={CreateGood} edit={EditGuesser} show={ShowGuesser} recordRepresentation="name" />
+            <Resource name="goods" list={ListGuesser} create={CreateGood} edit={EditGood} show={ShowGuesser} recordRepresentation="name" />
         </Admin>
     </div>
 );

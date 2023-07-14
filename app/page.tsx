@@ -4,7 +4,7 @@ import Combo from "@/components/Combo";
 import HeaderHome from "@/components/HeaderHome";
 import Salads from "@/components/Salads";
 import Test from "@/components/Test";
-import {Good, Prisma} from "@prisma/client";
+import {Good} from "@prisma/client";
 import {prisma} from "@/lib/prisma";
 
 const getGoods =async ():Promise<Good[]>=>{

@@ -6,9 +6,7 @@ export async function GET(
     request: Request,
     {params}: { params: { id: string } }) {
 
-    // const id =params.id
     const {id} = params
-    // console.log(id)
 
     const good = await prisma.good.findUnique({
         where: {
@@ -99,18 +97,17 @@ export async function PUT(request: Request, {params}: { params: { id: string } }
 export async function DELETE(
     request: Request,
     {params}: { params: { id: string } }) {
-    console.log(params)
     const ids = params.id.split(',').map(Number)
-    console.log(ids)
+
     try {
         const {id} = params
-        const data = await prisma.good.deleteMany({
+        await prisma.good.deleteMany({
             where: {
                 id: {in: [...ids]}
             }
         })
         return new NextResponse(
-            JSON.stringify(data),
+            JSON.stringify({data: [...ids]}),
             {status: 202})
 
     } catch (error: any) {
@@ -119,7 +116,6 @@ export async function DELETE(
                 status: "fail",
                 message: "No Good with the Provided ID Found",
             }
-
             return new NextResponse(
                 JSON.stringify(errorResponse),
                 {

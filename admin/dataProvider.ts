@@ -109,7 +109,6 @@ export const dataProvider: DataProvider = {
         return httpClient(url, {
             method: 'DELETE',
         }).then(({json}) => {
-            console.log(json)
             return ({data: json.data})
         });
     }
