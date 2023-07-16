@@ -47,9 +47,6 @@ export const seedsClientsWithOrders = async (clientsAmount: number, maxOrdersAmo
                             ...getOrders(maxOrdersAmount)
                         ]
                     },
-                    cart: {
-                        create: {}
-                    }
                 }
             }
         )

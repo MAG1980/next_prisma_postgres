@@ -17,7 +17,7 @@ export const seedGoodsOnOrders = async (maxGoodsAmount: number): Promise<void> =
      * Возвращает случайный массив товаров, длина которого ограничена параметром maxGoodsAmount
      * @param maxGoodsAmount максимальное количество товаров в заказе
      */
-    const getRandomGoods = (maxGoodsAmount: number) => {
+    const getRandomGoods = (maxGoodsAmount: number):{ id: number }[] => {
         //Получаем случайное количество товаров из заданного диапазона
         const count = faker.number.int({min: 1, max: maxGoodsAmount});
         let randomGoodsIds :{ id: number }[] = []

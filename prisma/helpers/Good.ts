@@ -2,7 +2,8 @@ import {fakerRU as faker} from '@faker-js/faker';
 import {UniqueEnforcer} from 'enforce-unique';
 import {prisma} from "../../lib/prisma";
 import {getImages} from "./GoodsImage";
-import {Good, Prisma} from "@prisma/client";
+import {Category, Good, Prisma} from "@prisma/client";
+import {getRandomElements} from "../helpers/general_use";
 
 const uniqueEnforcerName = new UniqueEnforcer();
 
@@ -30,8 +31,13 @@ const GoodWithImages: Prisma.GoodSelect = {
  * "Посев" товаров с изображениями
  * @param goodsAmount количество товаров
  * @param maxImagesAmount максимальное количество изображений у товара
+ * @param maxCategoriesAmount максимальное количество категорий товара
  */
-export const seedsGoodsWithImages = async (goodsAmount: number, maxImagesAmount: number): Promise<void> => {
+export const seedsGoodsWithImages = async (
+    goodsAmount: number,
+    maxImagesAmount: number,
+    maxCategoriesAmount: number): Promise<void> => {
+    const categories: Category[] = await prisma.category.findMany()
     for (let i = 0; i < goodsAmount; i++) {
         await prisma.good.create(
             {
@@ -40,6 +46,14 @@ export const seedsGoodsWithImages = async (goodsAmount: number, maxImagesAmount:
                     goodsImages: {
                         create: [
                             ...getImages(maxImagesAmount)
+                        ]
+                    },
+                    active: faker.datatype.boolean(),
+                    categories: {
+                        connect: [...getRandomElements(categories, maxCategoriesAmount)
+                            .map(element => (
+                                {id: element.id}
+                            ))
                         ]
                     }
                 }

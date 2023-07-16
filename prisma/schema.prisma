@@ -18,25 +18,24 @@ model Client {
   phoneNumber String? @unique
   email       String? @unique
   orders      Order[]
-  cart        Cart?
-}
-
-model Cart {
-  id       Int    @id @default(autoincrement())
-  client   Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId Int    @unique
-  goods    Good[]
 }
 
 model Good {
   id          Int          @id @default(autoincrement())
   name        String       @unique
+  active      Boolean
   basePrice   Float
   ingredients Json?
   description String
-  carts       Cart[]
   orders      Order[]
+  categories  Category[]
   goodsImages GoodsImage[]
+}
+
+model Category {
+  id    Int    @id @default(autoincrement())
+  name  String @unique
+  goods Good[]
 }
 
 enum OrderStatuses {
