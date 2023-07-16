@@ -17,15 +17,18 @@ export const seedGoodsOnOrders = async (maxGoodsAmount: number): Promise<void> =
      * Возвращает случайный массив товаров, длина которого ограничена параметром maxGoodsAmount
      * @param maxGoodsAmount максимальное количество товаров в заказе
      */
-    const getRandomGoods =  (maxGoodsAmount: number):Good[] => {
+    const getRandomGoods = (maxGoodsAmount: number) => {
         //Получаем случайное количество товаров из заданного диапазона
         const count = faker.number.int({min: 1, max: maxGoodsAmount});
-        let randomGoods:Good[] =[]
+        let randomGoodsIds :{ id: number }[] = []
         for (let i = 0; i < maxGoodsAmount; i++) {
-            const randomGood:Good[] =faker.helpers.arrayElements(goods, 1);
-            randomGoods = [...randomGoods, ...randomGood]
+            const randomGood: Good[] = faker.helpers.arrayElements(goods, 1);
+            const randomGoodId = randomGood.map(good => ({
+                id: good.id
+            }))
+            randomGoodsIds = [...randomGoodsIds, ...randomGoodId]
         }
-        return randomGoods
+        return randomGoodsIds
     }
 
     orders.map(async (order) => {
@@ -34,7 +37,7 @@ export const seedGoodsOnOrders = async (maxGoodsAmount: number): Promise<void> =
             data: {
                 goods: {
                     connect: [
-                        ...  getRandomGoods(maxGoodsAmount)
+                        ...getRandomGoods(maxGoodsAmount)
                     ]
                 }
             }
