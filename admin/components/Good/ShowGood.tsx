@@ -11,6 +11,7 @@ export const ShowGood = () => {
             <SimpleShowLayout>
                 <TextField source="id"/>
                 <TextField source="name"/>
+                <TextField source="category"/>
                 <RichTextField source="description"/>
                 {/*<DateField label="Publication date" source="published_at" />*/}
             </SimpleShowLayout>
