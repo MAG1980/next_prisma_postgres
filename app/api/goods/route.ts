@@ -8,73 +8,79 @@ export async function GET(request: NextRequest) {
     // const {page, perPage} = pagination
     // console.log("page: ", page)
 
-    const idsStr: string | null = request.nextUrl.searchParams.get('filter')
-    if (idsStr) {
-        try {
-            const  idsArr = JSON.parse(idsStr).ids.map(Number)
-            const goods = await prisma.good.findMany({
-                where: {
-                    id: {in: [...idsArr]}
-                }
-            })
-            return new NextResponse(
-                JSON.stringify({data: [...goods]}),
-                {status: 200}
-            )
-        } catch (error: any) {
-            const errorResponse = {
-                status: "error",
-                message: error.message,
-            }
-            return new NextResponse(
-                JSON.stringify(errorResponse),
-                {
-                    status: 500,
-                    headers: {"Content-Type": "application/json"}
-                }
-            )
+    const sortStr = request.nextUrl.searchParams.get('sort')
+
+    const idsStr = request.nextUrl.searchParams.get('filter')
+
+    const pageNumberStr = request.nextUrl.searchParams.get('page')
+    const limitStr = request.nextUrl.searchParams.get('perPage')
+
+    function getArgs() {
+        let args: any = {}
+
+        if (sortStr) {
+            const [field, order]:[string,string] = JSON.parse(sortStr)
+            args.orderBy = {[field]: order.toLowerCase()}
         }
-    }
-
-    const pageNumberStr: string | null = request.nextUrl.searchParams.get('page')
-    const limitStr: string | null = request.nextUrl.searchParams.get('perPage')
-
-    // Преобразуем строковые значения в цифровые (десятичная система счисления - radix)
-    const pageNumber = pageNumberStr ? parseInt(pageNumberStr, 10) : 1
-    const limit = limitStr ? parseInt(limitStr, 10) : 10
-    // Вычисляем смещение выборки записей БД с учётом номера текущей страницы и предела
-    const skip = (pageNumber - 1) * limit
-
-    const goods = await prisma.good.findMany({
-        skip,
-        take: limit
-    })
-
-    const total = await prisma.good.aggregate({
-        _count: true
-    })
-
-    let response = {
-        status: 'success',
-        results: goods.length,
-        pagination: {
-            page: pageNumber,
-            perPage: limit
-        },
-        total: total._count,
-        data: goods,
-    }
-
-    // return NextResponse.json(response)
-    return new NextResponse(
-        JSON.stringify(response),
-        {
-            status: 200,
-            headers: {
-                "Content-Type": "application/json",
-                'content-range': total._count.toString()
+        if (idsStr) {
+            const idsArr = JSON.parse(idsStr).ids.map(Number)
+            args.where = {
+                id: {in: [...idsArr]}
             }
+        }
+        if (pageNumberStr) {
+            // Преобразуем строковые значения в цифровые (десятичная система счисления - radix)
+            const pageNumber = pageNumberStr ? parseInt(pageNumberStr, 10) : 1
+            const limit = limitStr ? parseInt(limitStr, 10) : 10
+            // Вычисляем смещение выборки записей БД с учётом номера текущей страницы и предела
+            const skip = (pageNumber - 1) * limit
+            args = {...args, skip, take: limit}
+        }
+        console.log("args: ", args)
+        return args
+    }
+
+
+    try {
+        const goods = await prisma.good.findMany(getArgs())
+        const total = await prisma.good.aggregate({
+            _count: true
         })
+        let response = {
+            status: 'success',
+            results: goods.length,
+            pagination: {
+                page: pageNumberStr,
+                perPage: limitStr
+            },
+            total: total._count,
+            data: goods,
+        }
+
+        return new NextResponse(
+            JSON.stringify(response),
+            {
+                status: 200,
+                headers: {
+                    "Content-Type": "application/json",
+                    'content-range': total._count.toString()
+                }
+            }
+        )
+
+    } catch (error: any) {
+        const errorResponse = {
+            status: "error",
+            message: error.message,
+        }
+        return new NextResponse(
+            JSON.stringify(errorResponse),
+            {
+                status: 500,
+                headers: {"Content-Type": "application/json"}
+            }
+        )
+    }
 }
 
 export async function POST(request: Request) {

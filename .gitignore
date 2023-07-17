@@ -43,3 +43,4 @@ next-env.d.ts
 /.idea/vcs.xml
 /prisma/migrations/20230617060948_init/migration.sql
 /prisma/migrations/migration_lock.toml
+/.idea/sqldialects.xml
