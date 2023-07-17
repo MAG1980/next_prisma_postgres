@@ -8,20 +8,24 @@ const httpClient = fetchUtils.fetchJson;
 
 export const dataProvider: DataProvider = {
     getList: (resource, params) => {
+        console.log(params)
         const {page, perPage} = params.pagination;
+        const { field, order } = params.sort;
 
-        // const { field, order } = params.sort;
         const query = {
-            // sort: JSON.stringify([field, order]),
+            sort: JSON.stringify([field, order.toLowerCase()]),
             // range: JSON.stringify([(page - 1) * perPage, page * perPage - 1]),
+            page: JSON.stringify(params.pagination.page),
+            perPage:JSON.stringify(params.pagination.perPage),
             // filter: JSON.stringify(params.filter),
-            ...params
         };
-
+        console.log("query: ", query)
         //Из параметров запроса React-Admin формируем URL-адрес нашего API с необходимыми query-параметрами
         //Функция stringify из полученного объекта формирует строку query-параметров вида: page=2&perPage=10
-        const url = `${apiUrl}/${resource}?${stringify({page: page, perPage: perPage})}`;
+        // const url = `${apiUrl}/${resource}?${stringify({page: page, perPage: perPage})}`;
 
+        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        console.log(url)
         const response = httpClient(url).then(({headers, json}) => {
             return {
                 data: json.data,
@@ -34,9 +38,10 @@ export const dataProvider: DataProvider = {
 
     getMany: (resource, params) => {
         const query = {
-            filter: JSON.stringify({id: params.ids}),
+            filter: JSON.stringify({ids: params.ids}),
         };
-        const url = `${apiUrl}/${resource}?${stringify(query)}`;
+        const url = `${apiUrl}/${resource}?filter=${JSON.stringify({ids: params.ids})}`;
+        // const url = `${apiUrl}/${resource}?${stringify(query)}`;
         return httpClient(url).then(({json}) => ({data: json.data}));
     },
 
