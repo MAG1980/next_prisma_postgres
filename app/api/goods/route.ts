@@ -8,9 +8,36 @@ export async function GET(request: NextRequest) {
     // const {page, perPage} = pagination
     // console.log("page: ", page)
 
+    const idsStr: string | null = request.nextUrl.searchParams.get('filter')
+    if (idsStr) {
+        try {
+            const  idsArr = JSON.parse(idsStr).ids.map(Number)
+            const goods = await prisma.good.findMany({
+                where: {
+                    id: {in: [...idsArr]}
+                }
+            })
+            return new NextResponse(
+                JSON.stringify({data: [...goods]}),
+                {status: 200}
+            )
+        } catch (error: any) {
+            const errorResponse = {
+                status: "error",
+                message: error.message,
+            }
+            return new NextResponse(
+                JSON.stringify(errorResponse),
+                {
+                    status: 500,
+                    headers: {"Content-Type": "application/json"}
+                }
+            )
+        }
+    }
 
-    const pageNumberStr = request.nextUrl.searchParams.get('page') as string
-    const limitStr = request.nextUrl.searchParams.get('perPage') as string
+    const pageNumberStr: string | null = request.nextUrl.searchParams.get('page')
+    const limitStr: string | null = request.nextUrl.searchParams.get('perPage')
 
     // Преобразуем строковые значения в цифровые (десятичная система счисления - radix)
     const pageNumber = pageNumberStr ? parseInt(pageNumberStr, 10) : 1
@@ -51,7 +78,7 @@ export async function GET(request: NextRequest) {
 }
 
 export async function POST(request: Request) {
-   try {
+    try {
         const requestData = await request.json()
         // console.log("requestData: ", requestData)
         const good = await prisma.good.create({
